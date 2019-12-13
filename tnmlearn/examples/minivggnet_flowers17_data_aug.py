@@ -25,5 +25,5 @@ class MiniVggNetFlowers17DataAug(MiniVggNetFlowers17):
       steps_per_epoch=len(self.trainX) // 32,
       epochs=100, verbose=1)
     
-    self.plot_(H, 100)
+    self.H = H
     return H

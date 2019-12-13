@@ -43,7 +43,7 @@ class BaseLearningModel:
                        callbacks=self.callbacks,
                        validation_data=(self.testX, self.testY),
                        epochs=epochs, batch_size=batch_size)
-    self.plot_(H, epochs)
+    self.H = H
     return H
 
 
@@ -51,8 +51,10 @@ class BaseLearningModel:
     plot_model(self.model, to_file=outputpath, show_shapes=True)
     
 
-  def plot_(self, H, epochs):
+  def plot(self):
     # plot the training loss and accuracy
+    H = self.H
+    epochs = len(H.history['acc'])
     plt.style.use("ggplot")
     plt.figure()
     plt.plot(np.arange(0, epochs), H.history["loss"], label="train_loss")

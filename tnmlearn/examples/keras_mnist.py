@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from sklearn.preprocessing import LabelBinarizer
-from sklearn.model_selection import train_test_split
 from keras.models import Sequential
 from keras.layers.core import Dense
 from keras.optimizers import SGD
@@ -18,12 +16,9 @@ class KerasMnist(BaseLearningModel):
     
   
   def getData(self):  
-    ((trainX, trainY), (testX, testY), classNames) = load_mnist()
-    self.trainX = trainX
-    self.trainY = trainY
-    self.testX = testX
-    self.testY = testY
-    self.classNames = classNames    
+    ((self.trainX, self.trainY), 
+     (self.testX, self.testY), 
+     self.classNames) = load_mnist()
 
   
   def build(self):

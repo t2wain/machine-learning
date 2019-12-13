@@ -16,12 +16,9 @@ class MiniVggNetCifar10(BaseLearningModel):
     
   
   def getData(self):
-    ((trainX, trainY), (testX, testY), classNames) = load_cifar10()
-    self.trainX = trainX
-    self.trainY = trainY
-    self.testX = testX
-    self.testY = testY
-    self.classNames = classNames
+    ((self.trainX, self.trainY), 
+     (self.testX, self.testY), 
+     self.classNames) = load_cifar10()
     
 
   def build(self):

@@ -23,13 +23,9 @@ class ShallowNetAnimals(BaseLearningModel):
     sp = SimplePreprocessor(32, 32)
     iap = ImageToArrayPreprocessor()
     preprocessors = [sp, iap]
-    ((trainX, trainY), (testX, testY), classNames) = \
-      load_data(self.datasetpath, preprocessors)
-    self.trainX = trainX
-    self.trainY = trainY
-    self.testX = testX
-    self.testY = testY
-    self.classNames = classNames
+    ((self.trainX, self.trainY), 
+     (self.testX, self.testY), 
+     self.classNames) = load_data(self.datasetpath, preprocessors)
 
 
   def build(self):
