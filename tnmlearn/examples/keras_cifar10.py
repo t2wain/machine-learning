@@ -18,7 +18,7 @@ class KerasCifar10(BaseLearningModel):
     
   
   def getData(self):
-    ((trainX, trainY), (testX, testY), classNames) = load_cifar10()
+    ((trainX, trainY), (testX, testY), classNames) = load_cifar10(for_dnn=True)
     self.trainX = trainX
     self.trainY = trainY
     self.testX = testX

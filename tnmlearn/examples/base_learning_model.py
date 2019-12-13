@@ -12,6 +12,10 @@ from tnmlearn.callbacks import TrainingMonitor
 # %%
 
 class BaseLearningModel:
+  
+  def __init__(self):
+    self.callbacks = []
+
 
   def buildTrainMonCB_(self, outputpath):
     # construct the set of callbacks

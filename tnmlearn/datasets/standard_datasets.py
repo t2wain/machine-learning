@@ -11,7 +11,7 @@ from tnmlearn.datasets import SimpleDatasetLoader
 
 # %%
 
-def load_cifar10():
+def load_cifar10(for_dnn=False):
     # load the training and testing data, then scale it into the
     # range [0, 1]
     print("[INFO] loading CIFAR-10 data...")
@@ -19,6 +19,10 @@ def load_cifar10():
     
     trainX = trainX.astype("float") / 255.0
     testX = testX.astype("float") / 255.0
+    
+    if for_dnn:
+      trainX = trainX.reshape((trainX.shape[0], 3072))
+      testX = testX.reshape((testX.shape[0], 3072))
     
     # convert the labels from integers to vectors
     lb = LabelBinarizer()
