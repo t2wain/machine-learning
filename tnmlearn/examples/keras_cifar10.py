@@ -2,12 +2,11 @@
 
 # import the necessary packages
 
-from sklearn.preprocessing import LabelBinarizer
 from keras.models import Sequential
 from keras.layers.core import Dense
 from keras.optimizers import SGD
-from keras.datasets import cifar10
 from tnmlearn.examples import BaseLearningModel
+from tnmlearn.datasets import load_cifar10
 
 
 # %%
@@ -19,28 +18,12 @@ class KerasCifar10(BaseLearningModel):
     
   
   def getData(self):
-    # load the training and testing data, scale it into the range [0, 1],
-    # then reshape the design matrix
-    print("[INFO] loading CIFAR-10 data...")
-    ((trainX_, trainY_), (testX_, testY_)) = cifar10.load_data()
-    trainX_ = trainX_.astype("float") / 255.0
-    testX_ = testX_.astype("float") / 255.0
-    trainX_ = trainX_.reshape((trainX_.shape[0], 3072))
-    testX_ = testX_.reshape((testX_.shape[0], 3072))
-    
-    # convert the labels from integers to vectors
-    lb = LabelBinarizer()
-    trainY_ = lb.fit_transform(trainY_)
-    testY_ = lb.transform(testY_)
-    
-    self.trainX = trainX_
-    self.trainY = trainY_
-    self.testX = testX_
-    self.testY = testY_
-    
-    # initialize the label names for the CIFAR-10 dataset
-    self.labelNames = ["airplane", "automobile", "bird", "cat", "deer",
-      "dog", "frog", "horse", "ship", "truck"]
+    ((trainX, trainY), (testX, testY), classNames) = load_cifar10()
+    self.trainX = trainX
+    self.trainY = trainY
+    self.testX = testX
+    self.testY = testY
+    self.classNames = classNames
     
     
   def build(self):
@@ -61,4 +44,4 @@ class KerasCifar10(BaseLearningModel):
 
 
   def evaluate(self):
-    self.evaluate_(32, self.labelNames)
+    self.evaluate_(32)

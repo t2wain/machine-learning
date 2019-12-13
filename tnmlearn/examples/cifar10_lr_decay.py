@@ -1,13 +1,6 @@
 # -*- coding: utf-8 -*-
 
 # import the necessary packages
-from sklearn.preprocessing import LabelBinarizer
-from sklearn.metrics import classification_report
-from tnmlearn.nn.conv import MiniVGGNet
-from keras.callbacks import LearningRateScheduler
-from keras.optimizers import SGD
-from keras.datasets import cifar10
-import matplotlib.pyplot as plt
 import numpy as np
 
 def step_decay(epoch):

@@ -72,4 +72,4 @@ class MiniVggNetFlowers17(BaseLearningModel):
 
 
   def evaluate(self):
-    self.evaluate_(32, self.classNames)
+    self.evaluate_(32)

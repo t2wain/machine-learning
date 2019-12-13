@@ -12,10 +12,6 @@ from tnmlearn.callbacks import TrainingMonitor
 # %%
 
 class BaseLearningModel:
-  
-  def __init__(self):
-    self.callbacks = []
-
 
   def buildTrainMonCB_(self, outputpath):
     # construct the set of callbacks
@@ -66,9 +62,9 @@ class BaseLearningModel:
     plt.show()
     
 
-  def evaluate_(self, batch_size, target_names):
+  def evaluate_(self, batch_size):
     # evaluate the network
     print("[INFO] evaluating network...")
     predictions = self.model.predict(self.testX, batch_size=batch_size)
     print(classification_report(self.testY.argmax(axis=1),
-      predictions.argmax(axis=1), target_names=target_names))
+      predictions.argmax(axis=1), target_names=self.classNames))

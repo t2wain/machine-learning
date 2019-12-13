@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
 # import the necessary packages
-from sklearn.preprocessing import LabelBinarizer
 from tnmlearn.nn.conv import MiniVGGNet
 from keras.optimizers import SGD
-from keras.datasets import cifar10
 from tnmlearn.examples import BaseLearningModel
+from tnmlearn.datasets import load_cifar10
 
 
 # %%
@@ -17,27 +16,12 @@ class MiniVggNetCifar10(BaseLearningModel):
     
   
   def getData(self):
-    # load the training and testing data, then scale it into the
-    # range [0, 1]
-    print("[INFO] loading CIFAR-10 data...")
-    ((trainX, trainY), (testX, testY)) = cifar10.load_data()
-    
-    trainX = trainX.astype("float") / 255.0
-    testX = testX.astype("float") / 255.0
-    
-    # convert the labels from integers to vectors
-    lb = LabelBinarizer()
-    trainY = lb.fit_transform(trainY)
-    testY = lb.transform(testY)
-    
+    ((trainX, trainY), (testX, testY), classNames) = load_cifar10()
     self.trainX = trainX
     self.trainY = trainY
     self.testX = testX
     self.testY = testY
-    
-    # initialize the label names for the CIFAR-10 dataset
-    self.labelNames = ["airplane", "automobile", "bird", "cat", "deer",
-                       "dog", "frog", "horse", "ship", "truck"]
+    self.classNames = classNames
     
 
   def build(self):
@@ -54,4 +38,4 @@ class MiniVggNetCifar10(BaseLearningModel):
 
 
   def evaluate(self):
-    self.evaluate_(64,self.labelNames)
+    self.evaluate_(64)
