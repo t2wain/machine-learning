@@ -3,6 +3,7 @@
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.model_selection import train_test_split
 from sklearn import datasets
+from keras.datasets import cifar10
 from keras import backend as K
 from tnmlearn.other import paths
 from tnmlearn.datasets import SimpleDatasetLoader
@@ -14,7 +15,7 @@ def load_cifar10():
     # load the training and testing data, then scale it into the
     # range [0, 1]
     print("[INFO] loading CIFAR-10 data...")
-    ((trainX, trainY), (testX, testY)) = datasets.cifar10.load_data()
+    ((trainX, trainY), (testX, testY)) = cifar10.load_data()
     
     trainX = trainX.astype("float") / 255.0
     testX = testX.astype("float") / 255.0
