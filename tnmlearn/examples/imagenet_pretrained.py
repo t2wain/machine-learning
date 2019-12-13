@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # import the necessary packages
+import matplotlib.pyplot as plt
 from keras.applications import ResNet50
 from keras.applications import InceptionV3
 from keras.applications import Xception # TensorFlow ONLY
@@ -95,5 +96,4 @@ class ImageNetPretrain:
     orig = cv2.imread(imagepath)
     cv2.putText(orig, "Label: {}".format(label), (10, 30),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
-    cv2.imshow("Classification", orig)
-    cv2.waitKey(0)
+    plt.imshow(orig)

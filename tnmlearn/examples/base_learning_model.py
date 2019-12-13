@@ -2,6 +2,7 @@
 
 from sklearn.metrics import classification_report
 from keras.callbacks import ModelCheckpoint
+from keras.utils import plot_model
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -45,6 +46,10 @@ class BaseLearningModel:
     self.plot_(H, epochs)
     return H
 
+
+  def plotModel_(self, outputpath):
+    plot_model(self.model, to_file=outputpath, show_shapes=True)
+    
 
   def plot_(self, H, epochs):
     # plot the training loss and accuracy

@@ -43,7 +43,7 @@ class ShallowNetAnimals(BaseLearningModel):
     
     # convert the labels from integers to vectors
     lb = LabelBinarizer()
-    lb.fit(["cat", "dog", "pandas"])
+    lb.fit(["cat", "dog"])
     self.trainY = lb.transform(self.trainY)
     self.testY = lb.transform(self.testY)    
 
@@ -52,8 +52,8 @@ class ShallowNetAnimals(BaseLearningModel):
     # initialize the optimizer and model
     print("[INFO] compiling model...")
     opt = SGD(lr=0.005)
-    self.model = ShallowNet.build(width=32, height=32, depth=3, classes=3)
-    self.model.compile(loss="categorical_crossentropy", optimizer=opt,
+    self.model = ShallowNet.build(width=32, height=32, depth=3, classes=2)
+    self.model.compile(loss="binary_crossentropy", optimizer=opt,
                        metrics=["accuracy"])
     
 
@@ -62,4 +62,4 @@ class ShallowNetAnimals(BaseLearningModel):
 
 
   def evaluate(self):
-    self.evaluate_(32, ["cat", "dog", "panda"])
+    self.evaluate_(32, ["cat", "dog"])
