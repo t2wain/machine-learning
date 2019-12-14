@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import numpy as np
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.model_selection import train_test_split
 from sklearn import datasets
@@ -96,6 +97,9 @@ def load_data(datasetpath, preprocessors):
   lb.fit(labels)
   trainY = lb.transform(trainY)
   testY = lb.transform(testY)    
+  if len(labels) < 3:
+    trainY = np.hstack((trainY, 1 - trainY))
+    testY = np.hstack((testY, 1 - testY))
   classNames = lb.classes_
 
   return ((trainX, trainY), (testX, testY), classNames)
