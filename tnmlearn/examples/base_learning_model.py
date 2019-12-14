@@ -54,7 +54,7 @@ class BaseLearningModel:
   def plot(self):
     # plot the training loss and accuracy
     H = self.H
-    epochs = len(H.history['acc'])
+    epochs = len(H.history['loss'])
     plt.style.use("ggplot")
     plt.figure()
     plt.plot(np.arange(0, epochs), H.history["loss"], label="train_loss")
