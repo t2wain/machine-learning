@@ -96,10 +96,9 @@ def load_data(datasetpath, preprocessors):
   lb = LabelBinarizer()
   lb.fit(labels)
   trainY = lb.transform(trainY)
-  testY = lb.transform(testY)    
-  if len(labels) < 3:
+  classNames = lb.classes_
+  if len(classNames) < 3:
     trainY = np.hstack((trainY, 1 - trainY))
     testY = np.hstack((testY, 1 - testY))
-  classNames = lb.classes_
 
   return ((trainX, trainY), (testX, testY), classNames)
