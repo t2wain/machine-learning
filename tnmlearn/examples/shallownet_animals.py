@@ -33,7 +33,7 @@ class ShallowNetAnimals(BaseLearningModel):
     print("[INFO] compiling model...")
     opt = SGD(lr=0.005)
     self.model = ShallowNet.build(width=32, height=32, depth=3, classes=2)
-    self.model.compile(loss="category_crossentropy", optimizer=opt,
+    self.model.compile(loss="categorical_crossentropy", optimizer=opt,
                        metrics=["accuracy"])
     
 
