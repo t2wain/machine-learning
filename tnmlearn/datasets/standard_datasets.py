@@ -57,9 +57,6 @@ def load_mnist(for_cnn=False):
   trainY = lb.fit_transform(trainY)
   testY = lb.transform(testY)
   classNames = [str(x) for x in lb.classes_] 
-  if len(classNames) < 3:
-    trainY = np.hstack((trainY, 1 - trainY))
-    testY = np.hstack((testY, 1 - testY))
   
   return ((trainX, trainY), (testX, testY), classNames)
   
@@ -101,5 +98,8 @@ def load_data(datasetpath, preprocessors):
   trainY = lb.transform(trainY)
   testY = lb.transform(testY)
   classNames = lb.classes_
+  if len(classNames) < 3:
+    trainY = np.hstack((trainY, 1 - trainY))
+    testY = np.hstack((testY, 1 - testY))
 
   return ((trainX, trainY), (testX, testY), classNames)
