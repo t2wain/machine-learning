@@ -7,7 +7,7 @@ from tnmlearn.other import paths
 
 def unzip_datafile(datafile, destdir):
   os.makedirs(destdir)
-  with zipfile.ZipFile(zipfile, 'r') as zip_ref:
+  with zipfile.ZipFile(datafile, 'r') as zip_ref:
       zip_ref.extractall(destdir)
   
 
