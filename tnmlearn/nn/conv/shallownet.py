@@ -29,7 +29,10 @@ class ShallowNet:
     # softmax classifier
     model.add(Flatten())
     model.add(Dense(classes))
-    model.add(Activation("softmax"))
+    if classes > 2:
+      model.add(Activation("softmax"))
+    else:
+      model.add(Dense(1, activation='sigmoid'))
     
     # return the constructed network architecture
     return model
