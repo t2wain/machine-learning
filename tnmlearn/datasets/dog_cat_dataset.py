@@ -45,9 +45,12 @@ def split_dog_cat_image_files(traindir):
 
 def split_17flowers(traindir):
   for dir_id in range(17):
-    os.makedirs(os.path.join('dir_', str(dir_id)), exist_ok=True)
+    os.makedirs(os.path.join(traindir, 'dir_'+str(dir_id)), exist_ok=True)
     
   imagepaths = [(f, os.path.basename(f)) for f in paths.list_images(traindir)]
+  imagepaths = [(f, os.path.join(traindir, 'dir_'+str((int(i)-1)//80), n)) 
+                for (f, n) in imagepaths 
+                for i in re.findall('(\d{4})', n)]
   
   for (f, fn) in imagepaths:
     os.rename(f, fn)
