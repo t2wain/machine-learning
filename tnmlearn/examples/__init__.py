@@ -11,3 +11,4 @@ from .cifar10_monitor import Cifar10Monitor
 from .cifar10_checkpoint import Cifar10Checkpoint
 from .imagenet_pretrained import ImageNetPretrain
 from .minivggnet_flowers17 import MiniVggNetFlowers17
+from .minivggnet_flowers17_data_aug import MiniVggNetFlowers17DataAug

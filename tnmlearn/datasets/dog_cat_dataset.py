@@ -7,12 +7,6 @@ import re
 from tnmlearn.other import paths
 
 
-def unzip_datafile(datafile, destdir):
-  os.makedirs(destdir, exist_ok=True)
-  with zipfile.ZipFile(datafile, 'r') as zip_ref:
-      zip_ref.extractall(destdir)
-
-
 def extract_file(filePath, to_directory):
     if filePath.endswith('.zip'):
         opener, mode = zipfile.ZipFile, 'r'
