@@ -1,21 +1,39 @@
 # -*- coding: utf-8 -*-
 
 import zipfile
+import tarfile
 import os
+import re
 from tnmlearn.other import paths
 
 
 def unzip_datafile(datafile, destdir):
-  os.makedirs(destdir)
+  os.makedirs(destdir, exist_ok=True)
   with zipfile.ZipFile(datafile, 'r') as zip_ref:
       zip_ref.extractall(destdir)
+
+
+def extract_file(filePath, to_directory):
+    if filePath.endswith('.zip'):
+        opener, mode = zipfile.ZipFile, 'r'
+    elif filePath.endswith('.tar.gz') or filePath.endswith('.tgz'):
+        opener, mode = tarfile.open, 'r:gz'
+    elif filePath.endswith('.tar.bz2') or filePath.endswith('.tbz'):
+        opener, mode = tarfile.open, 'r:bz2'
+    else: 
+        return
+
+    os.makedirs(to_directory, exist_ok=True)
+    file = opener(filePath, mode)
+    try: file.extractall(to_directory)
+    finally: file.close()
   
 
 def split_dog_cat_image_files(traindir):
   catdir = os.path.join(traindir, 'cat')
   dogdir = os.path.join(traindir, 'dog')
-  os.mkdir(catdir)
-  os.mkdir(dogdir)
+  os.makedirs(catdir, exist_ok=True)
+  os.makedirs(dogdir, exist_ok=True)
   
   imagepaths = [(f, os.path.basename(f)) for f in paths.list_images(traindir)]
   imagepaths = [(f, os.path.join(dogdir if n.startswith('dog') else catdir, n)) 
@@ -23,3 +41,14 @@ def split_dog_cat_image_files(traindir):
   
   for (f, fn) in imagepaths:
     os.rename(f, fn)
+
+
+def split_17flowers(traindir):
+  for dir_id in range(17):
+    os.makedirs(os.path.join('dir_', str(dir_id)), exist_ok=True)
+    
+  imagepaths = [(f, os.path.basename(f)) for f in paths.list_images(traindir)]
+  
+  for (f, fn) in imagepaths:
+    os.rename(f, fn)
+
