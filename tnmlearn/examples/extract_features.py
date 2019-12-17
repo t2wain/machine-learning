@@ -64,9 +64,10 @@ def extract_features(dataset_path, output_file, buffer_size, batch_size):
   model = VGG16(weights="imagenet", include_top=False)
   
   image_size = (244,244)
-  for (batchLabels, batchImages) in get_data_(imagePaths, labels, bs, image_size):
+  for i, (batchLabels, batchImages) in enumerate(get_data_(imagePaths, labels, bs, image_size)):
     # pass the images through the network and use the outputs as
     # our actual features
+    bs = len(batchLabels)
     batchImages = np.vstack(batchImages)
     features = model.predict(batchImages, batch_size=bs)
 
@@ -76,6 +77,7 @@ def extract_features(dataset_path, output_file, buffer_size, batch_size):
     
     # add the features and labels to our HDF5 dataset
     dataset.add(features, batchLabels)
+    print("[INFO] writing batch... {}/{}".format(i, bs))
 
   # close the dataset
   dataset.close()
