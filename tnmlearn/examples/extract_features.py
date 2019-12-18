@@ -11,6 +11,12 @@ import numpy as np
 import random
 import os
 
+# import the necessary packages
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import classification_report
+import pickle
+import h5py
 
 def get_data_(imagePaths, labels, batch_size, image_size):
   bs = batch_size
@@ -38,13 +44,14 @@ def get_data_(imagePaths, labels, batch_size, image_size):
       # add the image to the batch
       batchImages.append(image)
       
-      yield (batchLabels, batchImages)
+    yield (batchLabels, batchImages)
 
 
 def extract_features(dataset_path, output_file, buffer_size, batch_size):
   bs = batch_size
   imagePaths = list(paths.list_images(dataset_path))
   random.shuffle(imagePaths)
+  print("[INFO] number of images... {}".format(len(imagePaths)))
   
   # extract the class labels from the image paths then encode the
   # labels
@@ -67,7 +74,8 @@ def extract_features(dataset_path, output_file, buffer_size, batch_size):
   for i, (batchLabels, batchImages) in enumerate(get_data_(imagePaths, labels, bs, image_size)):
     # pass the images through the network and use the outputs as
     # our actual features
-    bs = len(batchLabels)
+    bs = len(batchImages)
+    print("[INFO] processing batch... {}/{}".format(i, bs))
     batchImages = np.vstack(batchImages)
     features = model.predict(batchImages, batch_size=bs)
 
@@ -77,7 +85,38 @@ def extract_features(dataset_path, output_file, buffer_size, batch_size):
     
     # add the features and labels to our HDF5 dataset
     dataset.add(features, batchLabels)
-    print("[INFO] writing batch... {}/{}".format(i, bs))
 
   # close the dataset
   dataset.close()
+  print("[INFO] processing completed...")
+  
+  
+def train_feature(feature_file, num_jobs, model_file):
+  # open the HDF5 database for reading then determine the index of
+  # the training and testing split, provided that this data was
+  # already shuffled *prior* to writing it to disk
+  db = h5py.File(feature_file, "r")
+  i = int(db["labels"].shape[0] * 0.75)  
+
+  # define the set of parameters that we want to tune then start a
+  # grid search where we evaluate our model for each value of C
+  print("[INFO] tuning hyperparameters...")
+  params = {"C": [0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0]}
+  model = GridSearchCV(LogisticRegression(), params, cv=3, n_jobs=num_jobs)
+  model.fit(db["features"][:i], db["labels"][:i])
+  print("[INFO] best hyperparameters: {}".format(model.best_params_))
+  
+  # evaluate the model
+  print("[INFO] evaluating...")
+  preds = model.predict(db["features"][i:])
+  print(classification_report(db["labels"][i:], preds, 
+    target_names=db["label_names"]))
+  
+  # serialize the model to disk
+  print("[INFO] saving model...")
+  f = open(model_file, "wb")
+  f.write(pickle.dumps(model.best_estimator_))
+  f.close()
+  
+  # close the database
+  db.close()
