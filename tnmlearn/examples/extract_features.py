@@ -109,8 +109,8 @@ def train_feature(feature_file, num_jobs, model_file):
   # evaluate the model
   print("[INFO] evaluating...")
   preds = model.predict(db["features"][i:])
-  print(classification_report(db["labels"][i:], preds, 
-    target_names=db["label_names"]))
+  rpt = classification_report(db["labels"][i:], preds, 
+    target_names=db["label_names"])
   
   # serialize the model to disk
   print("[INFO] saving model...")
@@ -120,3 +120,4 @@ def train_feature(feature_file, num_jobs, model_file):
   
   # close the database
   db.close()
+  return rpt
